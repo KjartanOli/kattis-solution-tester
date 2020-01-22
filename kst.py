@@ -20,12 +20,12 @@ class Sample:
 		this.output = sampleOutput
 
 class Cache:
-	"""Cache management class"""
+	"""Cache management class."""
 	def __init__(this, fileName):
 		this.file = fileName
 
 	def contains(this, subdomain, problem):
-		"""Check if the cache contains the specified problem"""
+		"""Check if the cache contains the specified problem."""
 		dir = subdomain + '/' + problem + '/'
 		if this.file not in os.listdir():
 			return False
@@ -35,12 +35,12 @@ class Cache:
 		return False
 
 	def add(this, fileName, content):
-		"""Add a file to the cache"""
+		"""Add a file to the cache."""
 		with zipfile.ZipFile(this.file, 'a') as cache:
 			cache.writestr(fileName, content)
 
 	def load(this, subdomain, problem):
-		"""Load a problem from the cache"""
+		"""Load a problem from the cache."""
 		samples = []
 		dir = subdomain + '/' + problem + '/'
 		tmp = ""
@@ -62,15 +62,15 @@ class FileType(Enum):
 	JS = auto()
 
 def version():
-	"""Print version information"""
+	"""Print version information."""
 	sys.stdout.write("kst (Kattis Solution Tester) 2.0.0\n\nWritten by Kjartan Óli Ágústsson\n")
 
 def help():
-	"""Print help"""
+	"""Print help."""
 	sys.stdout.write("Usage: kst [OPTIONS] PROBLEM_ID SOLUTION\nCompare the output of SOLUTION to the sample outputs provided for the problem\n")
 
 def download_samples(url):
-	"""Download samples for the current problem"""
+	"""Download samples for the current problem."""
 	files = requests.get(url)
 	samples = []
 	tmp = ""
@@ -86,7 +86,7 @@ def download_samples(url):
 	return samples
 
 def test(testNum, sample, solution, interpreter):
-	"""Test the given solution against the given sample"""
+	"""Test the given solution against the given sample."""
 	if verbose:
 		sys.stdout.write("Testing Sample Input " + str(testNum + 1) + ":\nInput:\n" + sample.input + "\nOutput:\n")
 
@@ -108,7 +108,7 @@ def test(testNum, sample, solution, interpreter):
 			return False
 
 def get_fileType(file, verbose = False):
-	"""Get the filetype of the solution given"""
+	"""Get the filetype of the solution given."""
 	if verbose:
 		sys.stdout.write("File type is: ")
 		if file[-3:] == ".py":
@@ -140,11 +140,11 @@ def get_fileType(file, verbose = False):
 			return FileType.JS
 
 def is_compiled(fileType):
-	"""Check if the filetype of the solution requires compiling"""
+	"""Check if the filetype of the solution requires compiling."""
 	return fileType is FileType.C or fileType is FileType.CPP or fileType is FileType.JAVA
 
 def set_interpreter(fileType):
-	"""Find the appropriate interpreter for the solutions filetype"""
+	"""Find the appropriate interpreter for the solutions filetype."""
 	if verbose:
 		sys.stdout.write("Setting interpreter to: ")
 		if fileType is FileType.PYTHON:
@@ -172,7 +172,7 @@ def set_interpreter(fileType):
 			return "node"
 
 def set_compiler(fileType):
-	"""Find the appropriate compiler for the solutions filetype"""
+	"""Find the appropriate compiler for the solutions filetype."""
 	if verbose:
 		sys.stdout.write("Setting compiler to: ")
 		if fileType is FileType.C:
@@ -193,7 +193,7 @@ def set_compiler(fileType):
 			return "javac"
 
 def compile(file):
-	"""Compile the solution"""
+	"""Compile the solution."""
 	global compiler
 	if compiler == "":
 		compiler = set_compiler(get_fileType(file))
@@ -208,7 +208,7 @@ def compile(file):
 		raise CompileErrorExceptinon(err)
 
 def incompatable_python():
-	"""Print an error indicating incompatable options"""
+	"""Print an error indicating incompatable options."""
 	sys.stderr.write("Incompatable options --python2 and --python3\n")
 
 def main(argc, argv):
