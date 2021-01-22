@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#! /usr/bin/python3
 
 # kst (Kattis Solution Tester), compare the output of SOLUTION to the expected
 # output of the specified problem on kattis.com
@@ -69,7 +69,7 @@ class Cache:
 	def load(this, subdomain, problem):
 		"""Load a problem from the cache."""
 		samples = []
-		dir = subdomain + '/' + problem + '/'
+		dir = f"{subdomain}/{problem}/"
 		tmp = ""
 		with zipfile.ZipFile(this.file, 'r') as cache:
 			for name in filter(lambda name: dir in name, cache.namelist()):
@@ -91,6 +91,7 @@ class FileType(Enum):
 
 def main(argc, argv):
 	global python2, python3, verbose, compiler, noCache
+	cacheOnly = False
 	# Should you skip the current argument
 	skip = False
 	for i, arg in enumerate(argv):
@@ -156,9 +157,7 @@ def main(argc, argv):
 			return 3
 
 	else:
-		print(cacheOnly, "test")
 		if not cacheOnly:
-			print("Test")
 			samples = cache.load(subdomain, problem)
 
 	fileType = get_fileType(solution, True if verbose else False)
@@ -200,33 +199,34 @@ def main(argc, argv):
 			clean_up("a.out")
 
 	return 0
+
 def version():
 	"""Print version information."""
-	sys.stdout.write("kst (Kattis Solution Tester) 2.0.1 Copyright (C) " + year +
+	sys.stdout.write("kst (Kattis Solution Tester) 2.1.0 Copyright (C) " + year +
 		' ' + author + "\nThis program comes with ABSOLUTELY NO WARRANTY. This is " +
-		"free software,\nand you are welcome to redistribute it")
+		"free software,\nand you are welcome to redistribute it\n")
 
 def help():
 	"""Print help."""
 	# indent for options listing
 	indent = "  "
-	sys.stdout.write("Usage: kst [OPTIONS] PROBLEM SOLUTION\nCompare the output" +
-	" of SOLUTION to the sample outputs provided for the problem\nExample: kst -ice" +
-	"budarkassi1 budarkassi1.py\nDomain control:\n" + indent + "-ice, --iceland\t\t" +
-	"Set the subdomain to iceland\n" + indent + "\t--open\t\t\tSet the subdomain to" +
-	" open\n" + indent + "-s,\t--subdomain=SUBDOMAIN\t Set subdomain to SUBDOMAIN\n\n" +
-	"(Setting the subdomain to 'iceland' automaticly adds the 'iceland.' in" +
-	" all iceland problems to the problem's id)\n\n Testing control:\n" + indent + "-p2," +
-	"\t--python2\t\tSpecify that the solution should be tested with python2\n" + indent +
-	"-p3,\t--python3\t\tSpecify that the solution should be tested with python3\n" +
-	indent + "-c,\t--compiler=COMPILER\t Specify that the solution should be compiled" +
-	"using COMPILER\n\n Cache control:\n" + indent + "-nc,\t--no-cache\t\tDon't add the" +
-	"samples for this problem to the cache\n" + indent + "-cc,\t--clear-cache \t\tClear" +
-	" the cache and exit\n" + indent + "-co,\t--cache-only\t\tOnly use samples from" +
-	" the cache\n\nError codes:\n" + indent + "1\t\tIncompatable options --python2" +
-	" and --python3\n\nkst (Kattis Solution Tester) Copyright (C) " + year + ' ' + author +
-	"\nThis program comes with ABSOLUTELY NO  WARRANTY. This is free software,\nand" +
-	" you are welcome to redistribute it\n")
+	sys.stdout.write(f"Usage: kst [OPTIONS] PROBLEM SOLUTION\nCompare the output" +
+	f" of SOLUTION to the sample outputs provided for the problem\nExample: kst -ice" +
+	f"budarkassi1 budarkassi1.py\nDomain control:\n{indent}-ice, --iceland\t\t" +
+	f"Set the subdomain to iceland\n{indent}\t--open\t\t\tSet the subdomain to" +
+	f" open\n{indent}-s,\t--subdomain=SUBDOMAIN\tSet subdomain to SUBDOMAIN\n\n" +
+	f"(Setting the subdomain to 'iceland' automaticly adds the 'iceland.' in" +
+	f" all iceland problems to the problem's id)\n\n Testing control:\n{indent}-p2," +
+	f"\t--python2\t\tSpecify that the solution should be tested with python2\n{indent}"
+	f"-p3,\t--python3\t\tSpecify that the solution should be tested with python3\n" +
+	f"{indent}-c,\t--compiler=COMPILER\tSpecify that the solution should be compiled" +
+	f"using COMPILER\n\n Cache control:\n{indent}-nc,\t--no-cache\t\tDon't add the" +
+	f"samples for this problem to the cache\n{indent}-cc,\t--clear-cache \t\tClear" +
+	f" the cache and exit\n{indent}-co,\t--cache-only\t\tOnly use samples from" +
+	f" the cache\n\nError codes:\n\t1\t\tIncompatable options --python2" +
+	f" and --python3\n\nkst (Kattis Solution Tester) Copyright (C) {year} {author}" +
+	f"\nThis program comes with ABSOLUTELY NO  WARRANTY. This is free software,\nand" +
+	f" you are welcome to redistribute it\n")
 
 def get_url(subdomain, problem):
 	"""Get the url for the problem"""
@@ -234,8 +234,6 @@ def get_url(subdomain, problem):
 		return "https://" + subdomain + ".kattis.com/problems/iceland." + problem + "/file/statement/samples.zip"
 	else:
 		return "https://" +  subdomain + ".kattis.com/problems/" + problem + "/file/statement/samples.zip"
-
-
 
 def download_samples(subdomain, problem):
 	"""Download samples for the current problem."""
@@ -383,9 +381,8 @@ def incompatable_python():
 	sys.stderr.write("Incompatable options --python2 and --python3\n")
 
 def clean_up(file):
-	"""Cleon up executables created by compiling."""
+	"""Clean up executables created by compiling."""
 	os.remove(file)
-
 
 python2 = False
 python3 = False

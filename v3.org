@@ -1,0 +1,60 @@
+* Supported languages
+** C	
+** C++
+** Python 2
+** Python 3
+** Java
+** Node JS
+	 
+* Command line options
+** -h, --help
+** -s, --subdomain=[SUBDOMAIN]
+** -l, --language=[LANGUAGE]
+** -v, --verbosity=[LEVEL]
+** -V, --version
+** --clear-cache
+** -c, --cache=[ID]
+** -m, --memory-limit=[LIMIT]
+** -t, --time-limit=[LIMIT]
+* TODO
+** [#1] Download sample inputs and outputs
+** [#1] Determine whether a file needs to be compiled
+** [#1] Compile source files of compiled languages
+** [#1] Determine interpreter for interpreted languages
+** [#1] Run compiled binary/interpreted source file
+** [#1] Compare output to expected output
+** [#2] Support both passing precompiled binaries and source files for compiled languages, default to using source files.
+** [#2] Determine language based on file extension
+** [#1] Allow some command line flag to explicitly specify language
+** [#2] Config file (JSON)
+*** [#2] Set default subdomain 
+*** [#2] Set default between Python 2 and Python 3
+*** [#3] Verbosity level
+*** [#4] Whether input file should be considered a runnable executable or source file
+** [#2] Colour code test output depending on result
+*** Green - Successful test 
+*** Yellow - Compile/Runtime error
+*** Red - Failed test
+** [#3] Cache sample inputs and outputs
+*** [#5] Look into compressing cache using libzip 
+** [#3] Allow user to download problem samples to cache without testing a solution
+** [#3] Support checking for memory limit exceeded
+*** Read VmPeak from /proc/$PID/status 
+** [#3] Support timing program run time to check for time limit exceeded
+** [#3] Allow user to clear cache
+** [#4] Multithread testing to improve performance
+** [#5] Decide where to store information on which languages are compiled, and which are interpreted, (In code constant/external file)
+** [#6] Easter egg
+
+* Verbosity levels
+** 0	
+	 Test passed/failed, Runtime/Compile error
+** 0.5
+	 Time and memory
+** 1
+	 Output and expected output
+** 2
+	 Input
+** 3
+	 Compiler errors, runtime error messages
+	 
